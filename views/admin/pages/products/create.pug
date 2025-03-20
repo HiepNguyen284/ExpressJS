@@ -1,0 +1,50 @@
+extend ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-error()
+
+  h1.titlePage Thêm sản phẩm 
+  form(action='/admin/products/create' method='POST' enctype="multipart/form-data")
+    .container
+      .row
+        .col-md-12.mb-3
+          label(for='title' class='form-label') Tiêu đề
+          input(type='text' name='title' id='title' class='form-control')
+
+        .col-md-12.mb-3
+          label(for='description' class='form-label') Mô tả
+          textarea(name='description' id='description' rows='6' class='form-control')
+
+        .col-md-12.mb-3
+          label(for='price' class='form-label') Giá
+          input(type='number' name='price' id='price' class='form-control')
+
+        .col-md-12.mb-3
+          label(for='discountPercentage' class='form-label') % Giảm giá
+          input(type='number' name='discountPercentage' id='discountPercentage' class='form-control')
+
+        .col-md-12.mb-3
+          label(for='stock' class='form-label') Số lượng
+          input(type='number' name='stock' id='stock' class='form-control')
+
+        .col-md-12.mb-3
+          label(for='thumbnail' class='form-label') Ảnh sản phẩm
+          input(type='file' name='thumbnail' id='thumbnail' class='form-control' accept='image/*')
+          img(id='preview-thumbnail' class='hidden mt-2')
+
+        .col-md-12.mb-3
+          label(for='position' class='form-label') Vị trí
+          input(type='number' name='position' id='position' placeholder='Tự động tăng' class='form-control')
+
+        .col-md-12.mb-3
+          div(class='form-check')
+            input(type='radio' class='form-check-input' name='status' value='active' id='active' checked)
+            label(class='form-check-label' for='active') Hoạt động
+
+          div(class='form-check')
+            input(type='radio' class='form-check-input' name='status' value='inactive' id='inactive')
+            label(class='form-check-label' for='inactive') Dừng hoạt động
+
+        .col-md-12.mb-3
+          button(type='submit' class='btn btn-primary') Tạo mới

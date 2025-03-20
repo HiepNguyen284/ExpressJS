@@ -1,0 +1,8 @@
+mixin alert-success()
+  - if (messages.success)
+      messages.success
+        div(class='alert-custom alert alert-success')= messages.success
+mixin alert-error()
+  - if (messages.error)
+      messages.error
+        div(class='alert-custom alert alert-danger')= messages.error

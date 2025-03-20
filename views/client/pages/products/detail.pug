@@ -1,0 +1,31 @@
+extend ../../layouts/default.pug
+
+block main 
+  .container.product-page
+    .product-wrapper
+      .product-image
+        img(src=product.thumbnail alt=product.title)
+
+      .product-info
+        h1.product-title= product.title
+        p.product-description= product.description
+        
+        .product-price
+          span Giá: 
+          span.price= "$" + product.price
+
+        .product-discount
+          span Giảm giá:
+          span.discount= product.discountPercentage + "%"
+
+        .product-stock
+          span Tồn kho:
+          span.stock= product.stock
+
+        .product-status
+          span Trạng thái:
+          span.status= product.status === 'active' ? 'Còn hàng' : 'Hết hàng'
+
+        .product-actions
+          button.add-to-cart(type="button") Thêm vào giỏ hàng
+          a.buy-now(href="/checkout") Mua ngay

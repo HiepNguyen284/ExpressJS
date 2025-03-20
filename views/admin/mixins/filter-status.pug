@@ -1,0 +1,3 @@
+mixin filter-status(filterProduct)
+  each filter in filterProduct 
+    button(class=`btn btn-outline-primary filter ${filter.active}` value=filter.value) #{filter.title}

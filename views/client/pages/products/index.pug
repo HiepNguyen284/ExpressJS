@@ -1,0 +1,16 @@
+extend ../../layouts/default.pug
+
+block main 
+  .container 
+    h1.titlePage Danh sách sản phẩm
+    .list-products.row 
+      each product in products 
+        .col-3.item 
+          a(href=`/products/${product.slug}`)
+            .image 
+              img(src=product.thumbnail, alt="Product image")
+            .content
+              .title #{product.title}
+              .price-new #{product.priceNew}$
+              .price-old #{product.price}$
+              .discountPercentage #{product.discountPercentage}%

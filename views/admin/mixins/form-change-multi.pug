@@ -1,0 +1,10 @@
+mixin form-change-multi(path)
+  form(action=path method='POST' id='form-change-multi-status')
+    select(name='statusIsChoosed')
+      option(disabled selected) -- Chọn 1 hành động --
+      option(value="active") Hoạt động
+      option(value="inactive") Dừng hoạt động
+      option(value="delete-all") Xóa tất cả
+      option(value="change-position") Thay đổi vị trí
+    input(type="text" name='idIsChoosed' style='display: none' id='id-products-isChoosed')
+    button(type="submit" class="btn btn-primary") Áp dụng  

@@ -1,0 +1,39 @@
+extend ../../layouts/default.pug
+
+block main 
+  h1.titlePage Chi tiết sản phẩm
+
+  .product-field
+    label.product-label Tên sản phẩm:
+    span.product-value= product.title
+
+  .product-field
+    label.product-label Mô tả:
+    p.product-value= product.description
+
+  .product-field
+    label.product-label Giá:
+    span.product-value= "$" + product.price
+
+  .product-field
+    label.product-label Giảm giá:
+    span.product-value= product.discountPercentage + "%"
+
+  .product-field
+    label.product-label Số lượng trong kho:
+    span.product-value= product.stock
+
+  .product-field
+    label.product-label Trạng thái:
+    span.product-value= product.status === 'active' ? 'Kích hoạt' : 'Ẩn'
+
+  .product-field
+    label.product-label Cập nhật lần cuối:
+    span.product-value= new Date(product.updatedAt).toLocaleString('vi-VN')
+
+  .product-field
+    label.product-label Hình ảnh:
+    img.product-image(src=product.thumbnail alt="Thumbnail")
+
+  .product-actions
+    a.product-btn(href=`/admin/products/edit/${product._id}`) Chỉnh sửa sản phẩm
