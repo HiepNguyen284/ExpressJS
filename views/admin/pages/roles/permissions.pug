@@ -1,0 +1,38 @@
+extend ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/permissions.pug
+
+block main 
+  - const products_category = [{title: 'Xem', value: 'products-category_view'}, {title: 'Thêm mới', value: 'products-category_create'}, {title: 'Chỉnh sửa', value: 'products-category_edit'}, {title: 'Xóa', value: 'products-category_delete'}]
+
+  - const products = [{title: 'Xem', value: 'products_view'}, {title: 'Thêm mới', value: 'products_create'}, {title: 'Chỉnh sửa', value: 'products_edit'}, {title: 'Xóa', value: 'products_delete'}]
+
+  - const roles = [{title: 'Xem', value: 'roles_view'}, {title: 'Thêm mới', value: 'roles_create'}, {title: 'Chỉnh sửa', value: 'roles_edit'}, {title: 'Xóa', value: 'roles_delete'}, {title: 'Phân quyền', value: 'roles_permissions'}]
+
+  - const accounts = [{title: 'Xem', value: 'accounts_view'}, {title: 'Thêm mới', value: 'accounts_create'}, {title: 'Chỉnh sửa', value: 'accounts_edit'}, {title: 'Xóa', value: 'accounts_delete'}]
+
+  +alert-success()
+  h1.titlePage Phân quyền
+  div(class="d-flex justify-content-end mb-3")
+    button(class='btn btn-primary' button-submit) Cập nhật
+  table(table-permissions)
+    thead 
+      tr 
+        th Tính năng 
+        each record in records 
+          th #{record.title}
+    tbody 
+      tr(data-name='id' class='hidden')
+        td
+        each record in records 
+          td 
+            input(type='text' value=record.id)
+      +permissions('Danh mục sản phẩm', products_category, records)
+      +permissions('Sản phẩm', products, records)
+      +permissions('Nhóm quyền', roles, records)
+      +permissions('Tài khoản', accounts, records)
+
+  form(action='/admin/roles/permissions?_method=PATCH' method='POST' form-change-permissions class='hidden')
+    div(class='mb-3')
+      input(type='text' name='permissions' class='form-control')
+        

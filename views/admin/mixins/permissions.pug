@@ -1,0 +1,9 @@
+mixin permissions(title, arrays, records)
+  tr
+    td(style='font-weight: bold; background: gray; color: white') #{title}
+  each array in arrays
+    tr(data-name=array.value)
+      td(style='font-weight: bold') #{array.title}
+      each record in records 
+        td 
+          input(type='checkbox' class='check-box' checked=(record.permissions.includes(array.value)))

@@ -4,9 +4,12 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
+include ../../mixins/sort.pug
+include ../../mixins/moment.pug
 
 block main 
   +alert-success()
+  h1.titlePage Danh sách sản phẩm
   .card
     .card-header.text-bold Bộ lọc và tìm kiếm
     .card-body
@@ -15,7 +18,10 @@ block main
           +filter-status(filterProduct)
         .col-6
           +search(nameProductSearch)
-  h1.titlePage Danh sách sản phẩm
+  .card 
+    .card-header.text-bold Sắp xếp 
+    .card-body 
+      +sort(conditionSort)
   .card
     .row 
       .col-6 
@@ -34,6 +40,7 @@ block main
           th Vị trí
           th Giá
           th Trạng thái 
+          th Người tạo
           th Hành động
       tbody 
         each product, index in products 
@@ -53,6 +60,10 @@ block main
                 div(class="badge text-bg-success change-status" product-id=product._id product-status=product.status) Hoạt động
               else 
                 div(class="badge text-bg-danger change-status" product-id=product._id product-status=product.status) Không hoạt động
+            td 
+              p #{product.createdBy.account_fullName}
+              p
+                +formatDate(product.createdBy.createAt)
             td 
               button(class="btn btn-secondary" button-detail-product product-id=product._id) Chi tiết
               button(class="btn btn-primary" button-edit-product product-id=product._id) Sửa

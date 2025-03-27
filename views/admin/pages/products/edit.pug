@@ -1,5 +1,6 @@
 extend ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main 
   +alert-error()
@@ -12,6 +13,12 @@ block main
         .col-md-12.mb-3
           label(for='title' class='form-label') Tiêu đề
           input(type='text' name='title' id='title' class='form-control' value=product.title)
+
+        .col-md-12.mb-3 
+          label(for='parent-id' class='form-label') Danh mục cha 
+          select(name='parent_id' id='parent_id' class='form-select')
+            option(value='') --- Chọn danh mục cha ---
+            +select-tree(records, 1)
 
         .col-md-12.mb-3
           label(for='description' class='form-label') Mô tả

@@ -184,3 +184,113 @@ if(buttonDetailProduct) {
     })
   })
 }
+
+// Sort product
+const sortProduct = document.querySelector('[sort-product]');
+if(sortProduct) {
+  sortProduct.addEventListener('change', (e) => {
+    if(e.target.value) {
+      const [key, value] = e.target.value.split('-');
+      url.searchParams.set('sortKey', key);
+      url.searchParams.set('sortValue', value);
+      window.location.href = url;
+    }
+  })
+}
+const clearSort = document.querySelector('[clear-sort]');
+if(clearSort) {
+  clearSort.addEventListener('click', (e) => {
+    url.searchParams.delete('sortKey');
+    url.searchParams.delete('sortValue');
+    window.location.href = url;
+  })
+}
+
+// Thay đổi trạng thái category
+const buttonChange = document.querySelectorAll('.change-status-category');
+if(buttonChange) {
+  buttonChange.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const status = e.target.getAttribute('record-status');
+      const id = e.target.getAttribute('record-id');
+      const formChangeStatus = document.querySelector('[form-change-status-category]');
+      const path = formChangeStatus.getAttribute('data-path');
+      const action = `${path}/${status}/${id}?_method=PATCH`;
+      console.log(action);
+      formChangeStatus.action = action;
+      formChangeStatus.submit();
+    });
+  });
+};
+
+// Remove thumbnail
+const buttonRemoveThumnail = document.querySelector('.remove-thumbnail');
+if(buttonRemoveThumnail) {
+  buttonRemoveThumnail.addEventListener('click', (e) => {
+    const inputThumbnail = document.querySelector('#thumbnail');
+    const imgThumbnail = document.querySelector('#preview-thumbnail');
+
+    inputThumbnail.value = ''
+    imgThumbnail.src = ''
+    buttonRemoveThumnail.classList.add('hidden');
+    imgThumbnail.classList.add('hidden');
+  })
+}
+
+const inputThumbnail = document.querySelector('#thumbnail');
+if(inputThumbnail) {
+  inputThumbnail.addEventListener('change', (e) => {
+    if(inputThumbnail.value !== '' && inputThumbnail.value) {
+      buttonRemoveThumnail.classList.remove('hidden');
+    }
+  })
+}
+
+// Phân quyền
+const tablePermissions = document.querySelector('[table-permissions]');
+if(tablePermissions) {
+  const buttonSubmit = document.querySelector('[button-submit]');
+  buttonSubmit.addEventListener('click', (e) => {
+    const permisstions = [];
+    const rows = document.querySelectorAll('[data-name]');
+    rows.forEach(row => {
+      const data_name = row.getAttribute('data-name');
+      const inputs = row.querySelectorAll('input');
+      if(data_name === 'id') {
+        inputs.forEach(input => {
+          permisstions.push({id: input.value, permissions: []});
+        })
+      } else {
+        inputs.forEach((input, index) => {
+          if(input.checked) {
+            permisstions[index].permissions.push(data_name);
+          }
+        })
+      }
+    })
+    const formChangePermissions = document.querySelector('[form-change-permissions]');
+    const inputForm = formChangePermissions.querySelector('input');
+    inputForm.value = JSON.stringify(permisstions);
+    formChangePermissions.submit();
+  })
+}
+
+// Show ảnh khi thêm sản phẩm ra ngoài giao diện
+const uploadAvatarInput = document.querySelector('#avatar');
+if (uploadAvatarInput) {
+  uploadAvatarInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('preview-avatar');
+        if (img) {
+          img.src = e.target.result;
+          img.classList.remove('hidden');
+          img.style.maxWidth = '200px'; // Điều chỉnh kích thước ảnh nếu cần
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}

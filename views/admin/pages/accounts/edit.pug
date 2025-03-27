@@ -1,0 +1,48 @@
+extend ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-success()
+  +alert-error()
+
+  h1.titlePage Chỉnh sửa tài khoản
+  form(action=`/admin/accounts/edit/${account.id}?_method=PATCH` method='POST' form-create-account class='row' enctype="multipart/form-data")
+    div(class='mb-3 form-group col-12')
+      label(for='fullName' class='form-label') Họ tên
+      input(type='text' id='fullName' name='fullName' class='form-control' value=account.fullName)
+
+    div(class='mb-3 form-group col-12')
+      label(for='email' class='form-label') Email
+      input(type='text' id='email' name='email' class='form-control' value=account.email)
+
+    div(class='mb-3 form-group col-12')
+      label(for='password' class='form-label') Mật khẩu
+      input(type='text' id='password' name='password' class='form-control')
+       
+    div(class='mb-3 form-group col-12')
+      label(for='phone' class='form-label') Phone
+      input(type='text' id='phone' name='phone' class='form-control' value=account.phone)
+
+    div(class='mb-3 form-group col-12')
+      label(for='avatar' class='form-label') Avatar 
+      input(type='file' name='avatar' id='avatar' class='form-control' accept='image/*' value=account.avatar)
+      img(src=account.avatar id='preview-avatar' class=`mt-2 ${account.avatar ? '' : 'hidden'}` style='max-width: 200px; max-height: 200px') 
+
+    div(class='mb-3 form-group col-12')
+      label(for='role_id' class='form-label') Phân quyền
+      select(class='form-select' id='role_id' name='role_id')
+        option(value='') --- Chọn quyền ---
+        each role in roles 
+          option(value=role.id selected=(account.role_id === role.id)) #{role.title}
+
+    div(class='mb-3 form-group col-12')
+      div(class='form-check')
+        input(type='radio' class='form-check-input' name='status' value='active' id='active' checked=(account.status === 'active'))
+        label(class='form-check-label' for='active') Hoạt động
+
+      div(class='form-check')
+        input(type='radio' class='form-check-input' name='status' value='inactive' id='inactive' checked=(account.status === 'inactive'))
+        label(class='form-check-label' for='inactive') Dừng hoạt động
+
+    div(class='mb-3 form-group')
+      button(type='submit' class='btn btn-primary') Cập nhật

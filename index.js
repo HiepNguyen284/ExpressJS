@@ -6,14 +6,15 @@ const bodyParser = require('body-parser')
 const flash = require('express-flash') // Hiển thị thông báo
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const path = require('path');
 const app = express()
 const port = process.env.PORT
+const moment = require('moment');
 
 const routeClient = require('./routes/client/index.route')
 const routeAdmin = require('./routes/admin/index.route')
 
 const database = require('./config/database') // Kết nối database
-const { route } = require('./routes/admin/dashboard.route')
 database.connect() // Gọi hàm để kết nối
 
 app.set('views', `${__dirname}/views`)
@@ -23,10 +24,13 @@ app.use(express.static(`${__dirname}/public`)) // Định nghĩa thư mục ch�
 app.use(methodOverride('_method')) // Cho phép ghi đè method bằng `_method`
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/uploads', express.static('uploads'));
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce'))); // TinyMCE
 
 app.use(cookieParser('ACBDE'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
+
+app.locals.moment = moment
 
 routeClient(app)
 routeAdmin(app)

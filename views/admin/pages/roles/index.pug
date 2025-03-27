@@ -1,0 +1,27 @@
+extend ../../layouts/default.pug
+
+block main 
+  h1.titlePage Trang nhóm quyền
+
+  .card 
+    .card-header Danh sách
+    .card-body 
+      div(class="d-flex justify-content-end mb-3")
+        a(class='btn btn-primary' href='/admin/roles/create') Thêm nhóm quyền
+      table 
+        thead 
+          tr 
+            th STT
+            th Nhóm quyền 
+            th Mô tả ngắn 
+            th Hành động
+        tbody 
+          each record, index in records 
+            tr 
+              td #{index}
+              td #{record.title}
+              td #{record.description}
+              td 
+                a(class='btn btn-secondary mrl-10') Chi tiết 
+                a(href=`/admin/roles/edit/${record.id}` class='btn btn-warning mrl-10') Chỉnh sửa
+                a(class='btn btn-danger mrl-10') Xóa

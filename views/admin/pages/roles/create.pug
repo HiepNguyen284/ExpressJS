@@ -1,0 +1,13 @@
+extend ../../layouts/default.pug
+
+block main 
+  h1.titlePage Thêm nhóm quyền
+  form(action='/admin/roles/create' method='POST' class='row')
+    div(class='mb-3 col-12')
+      label(for='title' class="form-label") Tiêu đề
+      input(type='text' id='title' name='title' class="form-control")
+    div(class='mb-3 col-12')
+      label(for='description' class="form-label") Mô tả
+      input(type='text' id='description' name='description' class="form-control")
+    div(class='mb-3 col-12')
+      button(type='submit' class='btn btn-primary' style='margin: 0') Thêm mới

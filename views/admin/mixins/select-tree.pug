@@ -1,0 +1,7 @@
+mixin select-tree(childrens, level)
+  each children in childrens 
+    - const prefix = Array(level+1).join('-- ');
+    option(value=children.id selected=((record ? record.parent_id===children.id : false) || (product ? product.idProductCategory === children.id : false))) #{prefix} #{children.title}
+    if(children.children)
+      +select-tree(children.children, level+1)
+    

@@ -2,27 +2,27 @@ const express = require('express');
 const multer  = require('multer')
 const storageMulter = require('../../helpers/storageMulter');
 const upload = multer({ storage: storageMulter() })
-const route = express.Router();
+const router = express.Router();
 
 const controller = require('../../controllers/admin/product.controller.js');
 const validate = require('../../validates/admin/product.validate.js');
 
-route.get('/', controller.index);
+router.get('/', controller.index);
 
-route.patch('/change-status/:status/:id', controller.changeStatus);
+router.patch('/change-status/:status/:id', controller.changeStatus);
 
-route.patch('/change-multi-status', controller.changeMultiStatus);
+router.patch('/change-multi-status', controller.changeMultiStatus);
 
-route.delete('/delete/:id', controller.deleteProduct);
+router.delete('/delete/:id', controller.deleteProduct);
 
-route.get('/create', controller.create);
+router.get('/create', controller.create);
 
-route.post('/create', upload.single('thumbnail'), validate.createProduct, controller.createProduct);
+router.post('/create', upload.single('thumbnail'), validate.createProduct, controller.createProduct);
 
-route.get('/edit/:id', controller.edit);
+router.get('/edit/:id', controller.edit);
 
-route.patch('/edit/:id', upload.single('thumbnail'), validate.editProduct, controller.editProduct)
+router.patch('/edit/:id', upload.single('thumbnail'), validate.editProduct, controller.editProduct)
 
-route.get('/detail/:id', controller.detail);
+router.get('/detail/:id', controller.detail);
 
-module.exports = route;
+module.exports = router;

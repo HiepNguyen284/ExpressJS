@@ -1,4 +1,8 @@
 const Product = require('../../models/product.model.js');
+const ProductCategory = require('../../models/product-category.model');
+const Account = require('../../models/account.model.js');
+
+const findChilrenHelper = require('../../helpers/findChildren');
 
 // Lọc sản phẩm
 const filterStatusHelper = require('../../helpers/filterStatus.js');
@@ -9,7 +13,12 @@ const searchProductHelper = require('../../helpers/search.js');
 // Phân trang sản phẩm
 const paginationHelper = require('../../helpers/pagination.js');
 
+// Sắp xếp sản phẩm
+const sortProductHelper = require('../../helpers/sort.js');
+
 module.exports.index = async (req, res) => {
+  const accounts = await Account.find({deleted: false});
+
   // Điều kiện để hiển thị sản phẩm
   const query = {deleted: false};
 
@@ -37,15 +46,27 @@ module.exports.index = async (req, res) => {
     req
   )
 
+  // Sắp xếp sản phẩm
+  const sortProduct = sortProductHelper(req);
+
   // Lấy ra danh sách sản phẩm đã được lọc theo yêu cầu
-  const products = await Product.find(query).limit(objectPagination.limitProduct).skip(objectPagination.limitProduct * (objectPagination.currentPage - 1)).sort({position: 'desc'});
+  const products = await Product.find(query).limit(objectPagination.limitProduct).skip(objectPagination.limitProduct * (objectPagination.currentPage - 1)).sort(sortProduct.query);
+
+  products.forEach(product => {
+    accounts.forEach(account => {
+      if(product.createdBy.account_id === account.id) {
+        product.createdBy.account_fullName = account.fullName;
+      }
+    })
+  })
 
   res.render('admin/pages/products/index.pug', {
     title: 'Products',
     products: products,
     filterProduct: filterStatusProduct,
     nameProductSearch: objectResult.titleProduct, // Truyền giá trị tìm kiếm vào view
-    pagination: objectPagination
+    pagination: objectPagination,
+    conditionSort: sortProduct.condition
   })
 };
 
@@ -102,30 +123,45 @@ module.exports.deleteProduct = async (req, res) => {
 }
 
 module.exports.create = async (req, res) => {
+  const records = await ProductCategory.find({deleted: false, status: 'active'});
+  const newRecords = findChilrenHelper(records, '');
+
   res.render('admin/pages/products/create.pug', {
-    title: 'Thêm sản phẩm'
+    title: 'Thêm sản phẩm',
+    records: newRecords
   });
 }
 
 module.exports.createProduct = async (req, res) => {
+
   if(req.file) {
     req.body.thumbnail = `/uploads/${req.file.filename}`;
   }
+  if(req.body.position === '') {
+    const countProduct = await Product.countDocuments({});
+    req.body.position = countProduct + 1;
+  }
+  req.body.createdBy = {
+    account_id: res.locals.user.id
+  }
+
   const newProduct = new Product(req.body);
   newProduct.save();
   res.redirect('/admin/products');
 }
 
 module.exports.edit = async (req, res) => {
+  const records = await ProductCategory.find({deleted: false, status: 'active'});
+  const newRecords = findChilrenHelper(records, '');
+
   const idProduct = req.params.id;
-  console.log(idProduct);
 
   const product = await Product.findOne({_id: idProduct, deleted: false});
-  console.log(product);
 
   res.render('admin/pages/products/edit.pug', {
     title: 'Chỉnh sửa sản phẩm',
-    product: product
+    product: product,
+    records: newRecords
   });
 }
 

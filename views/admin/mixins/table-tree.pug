@@ -1,0 +1,25 @@
+
+mixin table-tree(records, level)
+  - const prefix = Array(level+1).join('-- ');
+  each record in records 
+    tr
+      td 
+        input(type="checkbox" class="choose-one-record check-box" value=record._id)
+      td #{index++}
+      td 
+        .image 
+          img(src=record.thumbnail, alt=record.title)
+      td(style='text-align: left') #{prefix} #{record.title}
+      td 
+        input(class=`record-position-${record._id}` value=record.position style='width: 60px')
+      td 
+        if record.status == 'active'
+          div(class="badge text-bg-success change-status-category" record-id=record._id record-status=record.status) Hoạt động
+        else 
+          div(class="badge text-bg-danger change-status-category" record-id=record._id record-status=record.status) Không hoạt động
+      td 
+        button(class="btn btn-secondary" button-detail-record record-id=record._id) Chi tiết
+        a(href=`/admin/products-category/edit/${record.id}` class="btn btn-primary" button-edit-record record-id=record._id) Sửa
+        button(class="btn btn-danger" button-delete-record record-id=record._id) Xóa
+    if(record.children) 
+      +table-tree(record.children, level+1)

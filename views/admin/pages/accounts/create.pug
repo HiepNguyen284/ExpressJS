@@ -1,0 +1,48 @@
+extend ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  +alert-success()
+  +alert-error()
+
+  h1.titlePage Thêm mới tài khoản
+  form(action='/admin/accounts/create' method='POST' form-create-account class='row' enctype="multipart/form-data")
+    div(class='mb-3 form-group col-12')
+      label(for='fullName' class='form-label') Họ tên
+      input(type='text' id='fullName' name='fullName' class='form-control')
+
+    div(class='mb-3 form-group col-12')
+      label(for='email' class='form-label') Email
+      input(type='text' id='email' name='email' class='form-control')
+
+    div(class='mb-3 form-group col-12')
+      label(for='password' class='form-label') Mật khẩu
+      input(type='text' id='password' name='password' class='form-control')
+       
+    div(class='mb-3 form-group col-12')
+      label(for='phone' class='form-label') Phone
+      input(type='text' id='phone' name='phone' class='form-control')
+
+    div(class='mb-3 form-group col-12')
+      label(for='avatar' class='form-label') Avatar 
+      input(type='file' name='avatar' id='avatar' class='form-control' accept='image/*')
+      img(id='preview-avatar' class='hidden mt-2') 
+
+    div(class='mb-3 form-group col-12')
+      label(for='role_id' class='form-label') Phân quyền
+      select(class='form-select' id='role_id' name='role_id')
+        option(value='') --- Chọn quyền ---
+        each role in roles 
+          option(value=role.id) #{role.title}
+
+    div(class='mb-3 form-group col-12')
+      div(class='form-check')
+        input(type='radio' class='form-check-input' name='status' value='active' id='active' checked)
+        label(class='form-check-label' for='active') Hoạt động
+
+      div(class='form-check')
+        input(type='radio' class='form-check-input' name='status' value='inactive' id='inactive')
+        label(class='form-check-label' for='inactive') Dừng hoạt động
+
+    div(class='mb-3 form-group')
+      button(type='submit' class='btn btn-primary') Tạo mới

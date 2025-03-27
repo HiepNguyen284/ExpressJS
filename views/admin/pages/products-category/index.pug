@@ -1,0 +1,39 @@
+extend ../../layouts/default.pug
+include ../../mixins/pagination.pug
+include ../../mixins/filter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/alert.pug
+include ../../mixins/table-tree.pug
+
+block main 
+  +alert-success()
+  h1.titlePage Danh mục sản phẩm 
+  .card
+    .card-header.text-bold Bộ lọc và tìm kiếm
+    .card-body
+      .row
+        .col-6.d-flex.gap-2
+          +filter-status(filterRecord)
+        .col-6
+          +search(nameRecordSearch)
+  .card 
+    .card-body 
+      a(href='/admin/products-category/create' class='btn btn-primary') Thêm danh mục
+  .card 
+    .card-body 
+      table
+        thead 
+          tr 
+            th
+              input(type='checkbox' class="choose-all-record check-box")
+            th STT 
+            th Hình ảnh 
+            th Tiêu đề
+            th Vị trí
+            th Trạng thái 
+            th Hành động
+        tbody
+          +table-tree(records, 1)
+  +pagination(pagination)
+
+  form(action='' method='POST' form-change-status-category data-path='/admin/products-category/change-status')

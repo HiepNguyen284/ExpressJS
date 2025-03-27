@@ -1,0 +1,48 @@
+extend ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+block main 
+  +alert-error()
+  +alert-success()
+
+  h1.titlePage Chỉnh sửa danh mục
+  form(action=`/admin/products-category/edit/${record.id}?_method=PATCH` method='POST' enctype="multipart/form-data")
+    .container
+      .row
+        .col-md-12.mb-3
+          label(for='title' class='form-label') Tiêu đề
+          input(type='text' value=record.title name='title' id='title' class='form-control')
+
+        .col-md-12.mb-3 
+          label(for='parent-id' class='form-label') Danh mục cha 
+          select(name='parent_id' id='parent_id' class='form-select')
+            option(value='') --- Chọn danh mục cha ---
+            +select-tree(records, 1)
+
+        .col-md-12.mb-3
+          label(for='description' class='form-label') Mô tả
+          textarea(name='description' id='description' rows='6' class='form-control') #{record.description}
+
+        .col-md-12.mb-3
+          label(for='thumbnail' class='form-label') Ảnh sản phẩm
+          input(type='file' value=record.thumbnail name='thumbnail' id='thumbnail' class='form-control' accept='image/*')
+          div(class='preview-container mt-2')
+            img(src=record.thumbnail id='preview-thumbnail' class=`${record.thumbnail ? '' : 'hidden'}`)
+            span(class=`remove-thumbnail ${record.thumbnail ? '' : 'hidden'}`) X
+
+        .col-md-12.mb-3
+          label(for='position' class='form-label') Vị trí
+          input(type='number' value=record.position name='position' id='position' placeholder='Tự động tăng' class='form-control')
+
+        .col-md-12.mb-3
+          div(class='form-check')
+            input(type='radio' class='form-check-input' name='status' value='active' id='active' checked=(record.status === 'active'))
+            label(class='form-check-label' for='active') Hoạt động
+
+          div(class='form-check')
+            input(type='radio' class='form-check-input' name='status' value='inactive' id='inactive' checked=(record.status === 'inactive'))
+            label(class='form-check-label' for='inactive' ) Dừng hoạt động
+
+        .col-md-12.mb-3
+          button(type='submit' class='btn btn-primary') Cập nhật

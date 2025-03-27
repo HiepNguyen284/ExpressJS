@@ -1,0 +1,38 @@
+extend ../../layouts/default.pug
+
+block main 
+  h1.titlePage Danh sách tài khoản
+
+  .card 
+    .card-header Danh sách
+    .card-body 
+      div(class='d-flex justify-content-end mb-3')
+        a(href='/admin/accounts/create' class='btn btn-outline-success') Thêm mới
+      table 
+        thead 
+          tr 
+            th STT 
+            th Avatar 
+            th Họ tên  
+            th Phân quyền 
+            th Email 
+            th Trạng thái 
+            th Hành động 
+        tbody 
+          each record, index in records 
+            tr 
+              td #{index+1}
+              td 
+                img(src=record.avatar, alt=record.fullName style='max-width: 50px; max-height: 50px')
+              td #{record.fullName}
+              td #{record.role_title}
+              td #{record.email}
+              td 
+                if record.status === 'active'
+                  span(class="badge bg-success") Hoạt động
+                else 
+                  span(class="badge bg-danger") Dừng hoạt động
+              td 
+                a(href='' class='btn btn-secondary mrl-10') Chi tiết
+                a(href=`/admin/accounts/edit/${record.id}` class='btn btn-warning mrl-10') Chỉnh sửa
+                a(href='' class='btn btn-danger mrl-10') Xóa

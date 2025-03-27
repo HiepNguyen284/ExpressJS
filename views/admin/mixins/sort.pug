@@ -1,0 +1,5 @@
+mixin sort(conditionSort)
+  select(name='sort' sort-product)
+    each condition in conditionSort 
+      option(value=condition.value selected=condition.selected) #{condition.title}
+  button(class='btn btn-danger' clear-sort) Clear
